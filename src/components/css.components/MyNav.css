@@ -1,0 +1,63 @@
+.navbar {
+  transition: background-color 0.3s ease;
+}
+
+/* Light theme */
+.light .navbar .navbar-expand-lg .navbar-light {
+  background-color: #F5E7DE;
+  color: #333;
+}
+
+.light .navbar-brand,
+.light .nav-link {
+  color: #333 !important;
+}
+
+.light .form-control,
+.light .form-select {
+  background-color: #fff;
+  color: #000;
+  border-color: #ccc;
+}
+
+/* Dark theme */
+.dark .navbar {
+  background-color: #1e1e1e !important;
+  color: #f1f1f1;
+}
+
+.dark .navbar-brand,
+.dark .nav-link {
+  color: #f1f1f1 !important;
+}
+
+.dark .form-control,
+.dark .form-select {
+  background-color: #2c2c2c ;
+  color: #f1f1f1 ;
+  border-color: #555 ;
+}
+
+/* Per tema dark */
+.dark ::placeholder {
+  color: #f1f1f1; /* o pure white: #ffffff */
+  opacity: 1; /* a volte è utile aumentare la visibilità */
+}
+
+/* Per tema light */
+.light ::placeholder {
+  color: #333333;
+  opacity: 1;
+}
+
+
+/* Categoria e ricerca */
+.selectCategory,
+.searchInput {
+  width: 300px;
+}
+
+.searchInput {
+  margin-left: 5px;
+  margin-right: 10px;
+}

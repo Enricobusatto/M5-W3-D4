@@ -3,6 +3,7 @@ import CommentList from './CommentList.jsx';
 import Spinner from 'react-bootstrap/Spinner';
 import AddComment from './AddComment.jsx';
 import { useSelected } from './ContextComponents/selectedContext.jsx';
+import EditComment from './EditComment.jsx';
 
 const key = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2ODViMWFiZjk2OGRlNTAwMTU1MmEzZTgiLCJpYXQiOjE3NTMwMjU5OTQsImV4cCI6MTc1NDIzNTU5NH0.AP3341mMG33Mc5lqmhYFaDj3z01WErAWIRwmHX6alnE';
 
@@ -11,6 +12,14 @@ function CommentArea() {
   const [comments, setComments] = useState([]);
   const [loading, setLoading] = useState(false); // LOADER
   const [error, setError] = useState(false);    // ERRORE
+  const [showEditModal, setShowEditModal] = useState(false); //MODALE X EDIT
+  const [selectedComment, setSelectedComment] = useState(null);
+
+  const handleEditClick = (comment) => {
+    setSelectedComment(comment);
+    setShowEditModal(true);
+  };
+
 
   // fetch GET
 
@@ -94,6 +103,45 @@ function CommentArea() {
     }
   };
 
+  // fetch PUT comment
+
+  const editComment = async (id, commentData) => {
+    try {
+      const response = await fetch(
+        `https://striveschool-api.herokuapp.com/api/comments/${id}`,
+        {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: key,
+          },
+          body: JSON.stringify({
+            comment: commentData.comment,
+            rate: commentData.rate,
+            elementId: commentData.elementId,
+          }),
+        }
+      );
+
+      if (response.ok) {
+        // Aggiorna lo stato localmente senza fetch
+        setComments((prevComments) =>
+          prevComments.map((c) =>
+            c._id === id
+              ? { ...c, comment: commentData.comment, rate: commentData.rate }
+              : c
+          )
+        );
+
+        alert('✅ Commento modificato con successo!');
+      } else {
+        console.error('Errore nella modifica del commento');
+      }
+    } catch (error) {
+      console.error('Errore nella richiesta:', error);
+    }
+  };
+
   useEffect(() => {
     if (asin)
       fetchComments();
@@ -133,7 +181,19 @@ function CommentArea() {
       <CommentList
         comments={comments}
         deleteComment={deleteComment}
+        editComment={handleEditClick}
       />
+      {selectedComment && (
+        <EditComment
+          show={showEditModal}
+          handleClose={() => setShowEditModal(false)}
+          handleSave={(updatedData) =>
+            editComment(selectedComment._id, updatedData)
+          }
+          initialComment={selectedComment}
+        />
+      )}
+
     </div>
   );
 }

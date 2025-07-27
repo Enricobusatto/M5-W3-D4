@@ -1,6 +1,6 @@
 import SingleComment from './SingleComment.jsx';
 
-function CommentList({ comments, deleteComment }) {
+function CommentList({ comments, deleteComment, editComment }) {
   return (
     <div className="comment-list">
       {comments.map((comment) => (
@@ -8,6 +8,7 @@ function CommentList({ comments, deleteComment }) {
           <SingleComment
             comment={comment}
             deleteComment={deleteComment}
+            editComment={() => editComment(comment)}
           />
         </div>
       ))}
@@ -15,4 +16,4 @@ function CommentList({ comments, deleteComment }) {
   );
 }
 
-export default CommentList;
+export default CommentList

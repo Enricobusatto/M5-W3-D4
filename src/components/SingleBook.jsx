@@ -2,22 +2,23 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './css.components/SingleBook.css';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
-import { useState } from 'react';
-import CommentArea from './CommentArea';
+import { useSelected } from './ContextComponents/selectedContext';
 
 
 
 function SingleBook({ book }) {
-    const [selected, setSelected] = useState(false)
+
+    const { selected, setSelected } = useSelected()
+
     return (
         <Card
             className="card-hover shadow d-flex flex-column "
             style={{ width: '100%', height: '100%', border: '0' }}
         >
-            <Card.Img onClick={() => setSelected(!selected)}
+            <Card.Img onClick={() => setSelected(oldAsin=> book.asin == oldAsin ? '' : book.asin )}
                 alt={book.title}
                 variant="top"
-                className={selected && 'border border-5 border-danger'}
+                className={selected == book.asin && 'border border-5 border-danger'}
                 src={book.img}
                 style={{ height: '300px', objectFit: 'cover' }}
             />
@@ -27,7 +28,6 @@ function SingleBook({ book }) {
                     <Card.Text>Category : {book.category}</Card.Text>
                     <Card.Text className="text-muted">Price: {book.price} $</Card.Text>
                 </div>
-                {selected && <CommentArea asin={book.asin} />}
                 <Button variant="success" className="mt-3">
                     Add To Cart
                 </Button>

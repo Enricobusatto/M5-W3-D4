@@ -11,6 +11,9 @@ import scifi from './assets/scifi.json';
 import { useState } from 'react';
 import { ThemeProvider } from './components/ContextComponents/ThemeContext.jsx';
 import './components/css.components/App.css';
+import { Col, Container, Row } from 'react-bootstrap';
+import CommentArea from './components/CommentArea.jsx';
+import { SelectedProvider } from './components/ContextComponents/selectedContext.jsx';
 
 
 // Unione di tutti i libri in un unico array
@@ -38,7 +41,18 @@ function App() {
         <ThemeProvider>
             <MyNav setSearchTitle={setSearchTitle} setSelectedCategory={setSelectedCategory} categories={categories} searchTitle={searchTitle} selectedCategory={selectedCategory} />
             <Welcome />
-            <AllTheBooks filteredBooks={filteredBooks} searchTitle={searchTitle} selectedCategory={selectedCategory} />
+            <SelectedProvider>
+                <Container>
+                    <Row>
+                        <Col md={7} lg={8}>
+                            <AllTheBooks filteredBooks={filteredBooks} searchTitle={searchTitle} selectedCategory={selectedCategory} />
+                        </Col>
+                        <Col md={5} lg={4}>
+                            <CommentArea />
+                        </Col>
+                    </Row>
+                </Container>
+            </SelectedProvider>
             <MyFooter />
         </ThemeProvider>
 

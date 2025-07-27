@@ -1,15 +1,17 @@
-import Carousel from 'react-bootstrap/Carousel';
 import SingleComment from './SingleComment.jsx';
 
-function CommentList({ comments, onSubmit, deleteComment }) {
+function CommentList({ comments, deleteComment }) {
   return (
-    <Carousel slide>
+    <div className="comment-list">
       {comments.map((comment) => (
-        <Carousel.Item key={comment._id}>
-          <SingleComment comment={comment} handleSubmit={onSubmit} deleteComment={deleteComment}/>
-        </Carousel.Item>
+        <div key={comment._id} className="mb-3">
+          <SingleComment
+            comment={comment}
+            deleteComment={deleteComment}
+          />
+        </div>
       ))}
-    </Carousel>
+    </div>
   );
 }
 

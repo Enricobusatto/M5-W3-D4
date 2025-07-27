@@ -1,13 +1,18 @@
 import { useEffect, useState } from 'react';
 import CommentList from './CommentList.jsx';
 import Spinner from 'react-bootstrap/Spinner';
+import AddComment from './AddComment.jsx';
+import { useSelected } from './ContextComponents/selectedContext.jsx';
 
 const key = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2ODViMWFiZjk2OGRlNTAwMTU1MmEzZTgiLCJpYXQiOjE3NTMwMjU5OTQsImV4cCI6MTc1NDIzNTU5NH0.AP3341mMG33Mc5lqmhYFaDj3z01WErAWIRwmHX6alnE';
 
-function CommentArea({ asin }) {
+function CommentArea() {
+  const { selected: asin } = useSelected()
   const [comments, setComments] = useState([]);
-  const [loading, setLoading] = useState(true); // LOADER
+  const [loading, setLoading] = useState(false); // LOADER
   const [error, setError] = useState(false);    // ERRORE
+
+  // fetch GET
 
   const fetchComments = async () => {
     setLoading(true);
@@ -34,6 +39,8 @@ function CommentArea({ asin }) {
       setLoading(false);
     }
   };
+
+  //fetch new POST 
 
   const handleSubmit = async (newComment) => {
     try {
@@ -63,6 +70,8 @@ function CommentArea({ asin }) {
     }
   };
 
+  //fetch DELETE comment 
+
   const deleteComment = async (id) => {
     if (window.confirm('Sei sicuro di voler eliminare questo commento?')) {
       try {
@@ -86,10 +95,13 @@ function CommentArea({ asin }) {
   };
 
   useEffect(() => {
-    fetchComments();
+    if (asin)
+      fetchComments();
+    else setComments([])
   }, [asin]);
 
   // GESTIONE DELLE 3 CASISTICHE:
+
   if (loading) {
     return (
       <div className="text-center mt-5">
@@ -107,7 +119,7 @@ function CommentArea({ asin }) {
     );
   }
 
-  if (comments.length === 0) {
+  if (asin && comments.length === 0) {
     return (
       <div className="text-center mt-5 text-muted">
         <p>📭 Nessun commento disponibile per questo libro.</p>
@@ -116,11 +128,13 @@ function CommentArea({ asin }) {
   }
 
   return (
-    <CommentList
-      comments={comments}
-      onSubmit={handleSubmit}
-      deleteComment={deleteComment}
-    />
+    <div>
+      <AddComment asin={asin} handleSubmit={handleSubmit} />
+      <CommentList
+        comments={comments}
+        deleteComment={deleteComment}
+      />
+    </div>
   );
 }
 

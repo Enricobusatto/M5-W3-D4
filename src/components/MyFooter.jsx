@@ -4,7 +4,7 @@ import { useTheme } from './ContextComponents/ThemeContext';
 
 
 function MyFooter() {
-      const { theme} = useTheme();
+    const { theme } = useTheme();
     return (
         <Container className={`py-4 mt-5 border-top ${theme}`}>
             <Nav className="justify-content-center mb-3">
